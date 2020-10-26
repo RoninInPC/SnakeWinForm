@@ -1,4 +1,9 @@
-#include<vector>
+using namespace System;
+using namespace System::ComponentModel;
+using namespace System::Collections;
+using namespace System::Windows::Forms;
+using namespace System::Data;
+using namespace System::Drawing;
 #define SIZEX 30
 #define SIZEY 30
 enum MovingInfo {
@@ -19,23 +24,23 @@ enum MusicInfo {
 	STOP,
 	LOOSE
 };
-struct Point {
+struct MyPoint {
 	int x;
 	int y;
-	void ShowPoint();
+	void ShowPoint(Graphics^ graphics, Color color, int r);
 };
 class Snake {
 private:
-	std::vector<Point> Body;
+	MyPoint Body[901];
+	MyPoint Before;
 	int Size;
 public:
-	Snake() :Body(1, { 0,0}), Size(1) {};
-	void SnakeMove(Point New);
-	void SnakeGrow(Point New);
-	~Snake();
-	std::vector<Point> GetBody() { return Body; };
-	int GetSize() { return Size; };
-	void ShowSnake();
+	Snake() { Size = 1; Body[0] = { 0,0 }; Before = { -1,-1 }; };
+	void SnakeMove(MyPoint New);
+	void SnakeGrow(MyPoint New);
+	MyPoint* GetBody() { return this->Body; };
+	int GetSize() { return this->Size; };
+	void ShowSnake(Graphics^ graphics, int r);
 };
 class Box {
 private:
@@ -43,22 +48,24 @@ private:
 	int SizeX;
 	int SizeY;
 public:
-	Box() :snake(), SizeX(SIZEX), SizeY(SIZEY) {};
-	~Box();
-	int GetSizeX() { return SizeX; };
-	int GetSizeY() { return SizeY; };
-	Snake GetSnake() { return snake; };
-	void ShowBox();
+	Box() { this->snake; this->SizeX = SIZEX; this->SizeY = SIZEY; };
+	int GetSizeX() { return this->SizeX; };
+	int GetSizeY() { return this->SizeY; };
+	Snake GetSnake() { return this->snake; };
+	void SetSnake(Snake snake1) { this->snake = snake1; }
+	void ShowBox(Graphics^ graphics, int Height, int Width);
 };
 class Game {
 public:
 	Box box;
+	MyPoint Apple;
 	GameInfo GInfo;
 	MusicInfo MInfo;
 	MovingInfo MoInfo;
-	Game() :box(), GInfo(BEGIN), MInfo(PLAY), MoInfo(ZERO) {};
-	~Game();
-	void IfGameEnd();	
-	void ShowGameOver();
-	void ShowPause();
+	Game() { box; this->GInfo = BEGIN; this->MInfo = PLAY; this->MoInfo = ZERO; NewApple(); };
+	void ShowGame(Graphics^ graphics, PictureBox^ pictureBox1);
+	bool IfGameEnd();	
+	void NewApple();
+	//void ShowGameOver();
+	//void ShowPause();
 };

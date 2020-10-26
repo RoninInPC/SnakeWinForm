@@ -1,5 +1,6 @@
 #pragma once
 #include"MyForm1.h"
+int t=0;
 namespace SnakeWinForm {
 
 	using namespace System;
@@ -38,6 +39,8 @@ namespace SnakeWinForm {
 	private: System::Windows::Forms::Button^ START;
 	private: System::Windows::Forms::Button^ SETTINGS;
 	private: System::Windows::Forms::Button^ OUT;
+	private: System::Windows::Forms::Timer^ timer1;
+	private: System::ComponentModel::IContainer^ components;
 
 	protected:
 
@@ -45,7 +48,7 @@ namespace SnakeWinForm {
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-		System::ComponentModel::Container ^components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -54,11 +57,13 @@ namespace SnakeWinForm {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
 			this->START = (gcnew System::Windows::Forms::Button());
 			this->SETTINGS = (gcnew System::Windows::Forms::Button());
 			this->OUT = (gcnew System::Windows::Forms::Button());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->tableLayoutPanel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -88,7 +93,9 @@ namespace SnakeWinForm {
 			this->START->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->START->BackColor = System::Drawing::SystemColors::Info;
+			this->START->BackColor = System::Drawing::Color::DarkRed;
+			this->START->Font = (gcnew System::Drawing::Font(L"Broadway", 19.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
 			this->START->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->START->Location = System::Drawing::Point(3, 3);
 			this->START->Name = L"START";
@@ -103,7 +110,9 @@ namespace SnakeWinForm {
 			this->SETTINGS->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->SETTINGS->BackColor = System::Drawing::SystemColors::Info;
+			this->SETTINGS->BackColor = System::Drawing::Color::Yellow;
+			this->SETTINGS->Font = (gcnew System::Drawing::Font(L"Broadway", 19.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
 			this->SETTINGS->Location = System::Drawing::Point(3, 180);
 			this->SETTINGS->Name = L"SETTINGS";
 			this->SETTINGS->Size = System::Drawing::Size(448, 171);
@@ -117,7 +126,9 @@ namespace SnakeWinForm {
 			this->OUT->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->OUT->BackColor = System::Drawing::SystemColors::Info;
+			this->OUT->BackColor = System::Drawing::Color::Gold;
+			this->OUT->Font = (gcnew System::Drawing::Font(L"Broadway", 19.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
 			this->OUT->Location = System::Drawing::Point(3, 357);
 			this->OUT->Name = L"OUT";
 			this->OUT->Size = System::Drawing::Size(448, 173);
@@ -126,10 +137,17 @@ namespace SnakeWinForm {
 			this->OUT->UseVisualStyleBackColor = false;
 			this->OUT->Click += gcnew System::EventHandler(this, &MyForm::OUT_Click);
 			// 
+			// timer1
+			// 
+			this->timer1->Enabled = true;
+			this->timer1->Interval = 50;
+			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::OnTick1);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"$this.BackgroundImage")));
 			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
 			this->ClientSize = System::Drawing::Size(478, 549);
 			this->Controls->Add(this->tableLayoutPanel1);
@@ -137,23 +155,27 @@ namespace SnakeWinForm {
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->MaximumSize = System::Drawing::Size(500, 600);
-			this->MinimumSize = System::Drawing::Size(500, 600);
+			this->MinimumSize = System::Drawing::Size(500, 473);
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
-			this->Text = L"Snake";
+			this->Text = L"JOJOSnake";
 			this->Load += gcnew System::EventHandler(this, &MyForm::MyForm_Load);
 			this->tableLayoutPanel1->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
+	private: System::Void OnTick1(System::Object^ sender, System::EventArgs^ e) {
+		t++;
+		t %= 1000;
+	}
 	private: System::Void tableLayoutPanel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 	}
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void START_Click(System::Object^ sender, System::EventArgs^ e) {
-		//SnakeWinForm1::MyForm1^ GameForm = gcnew SnakeWinForm1::MyForm1;
-		//GameForm->ShowDialog();
+		SnakeWinForm::MyForm1^ GameForm = gcnew SnakeWinForm::MyForm1;
+		GameForm->ShowDialog();
 	}
 	private: System::Void SETTINGS_Click(System::Object^ sender, System::EventArgs^ e) {
 	}

@@ -1,24 +1,18 @@
 #include"shake.hpp"
-void Snake::SnakeMove(Point New) {
+#include<iostream>
+extern int t;
+void Snake::SnakeMove(MyPoint New) {
+	this->Before = this->Body[0];
 	for (int i = 0; i < this->Size; i++) {
 		this->Body[i] = this->Body[i + 1];
 	}
 	this->Body[Size - 1] = New;
 }
-void Snake::SnakeGrow(Point New) {
+void Snake::SnakeGrow(MyPoint New) {
 	this->Size++;
-	this->Body.push_back(New);
+	this->Body[Size - 1] = New;
 }
-Snake::~Snake() {
-	this->Body.clear();
-}
-Box::~Box() {
-	this->snake.~Snake();
-}
-Game::~Game() {
-	this->box.~Box();
-}
-void Game::IfGameEnd() {
+bool Game::IfGameEnd() {
 	if (this->box.GetSnake().GetBody()[this->box.GetSnake().GetSize() - 1].x >= SIZEX ||
 	this->box.GetSnake().GetBody()[this->box.GetSnake().GetSize() - 1].x < 0 ||
 	this->box.GetSnake().GetBody()[this->box.GetSnake().GetSize() - 1].y >= SIZEY ||
@@ -26,10 +20,9 @@ void Game::IfGameEnd() {
 		this->GInfo = END;
 		this->MInfo = LOOSE;
 		this->MoInfo = ZERO;
-		this->~Game();
-		return;
+		return true;
 	}
-	for (int i = 0; i < this->box.GetSnake().GetSize() - 1; i++) {
+	for (int i = 0; i < this->box.GetSnake().GetSize() - 2; i++) {
 		if (this->box.GetSnake().GetBody()[this->box.GetSnake().GetSize() - 1].x ==
 		this->box.GetSnake().GetBody()[i].x &&
 		this->box.GetSnake().GetBody()[this->box.GetSnake().GetSize() - 1].y ==
@@ -37,8 +30,22 @@ void Game::IfGameEnd() {
 			this->GInfo = END;
 			this->MInfo = LOOSE;
 			this->MoInfo = ZERO;
-			this->~Game();
-			return;
+			return true;
+		}
+	}
+	return false;
+}
+void Game::NewApple() {
+	srand(t);
+	while (1) {
+		int x = rand() % SIZEX;
+		int y = rand() % SIZEY;
+		for (int i = 0; i < this->box.GetSnake().GetSize(); i++) {
+			if (this->box.GetSnake().GetBody()[i].x != x || this->box.GetSnake().GetBody()[i].y != y) {
+				this->Apple.x = x;
+				this->Apple.y = y;
+				return;
+			}
 		}
 	}
 }
