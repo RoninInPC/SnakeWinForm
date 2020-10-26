@@ -140,7 +140,7 @@ namespace SnakeWinForm {
 			// timer1
 			// 
 			this->timer1->Enabled = true;
-			this->timer1->Interval = 50;
+			this->timer1->Interval = 100;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::OnTick1);
 			// 
 			// MyForm

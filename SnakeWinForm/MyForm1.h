@@ -21,6 +21,7 @@ void Game::ShowGame(Graphics^ graphics, PictureBox^ pictureBox1) {
 	this->box.ShowBox(graphics, pictureBox1->Height,pictureBox1->Width);
 	this->Apple.ShowPoint(graphics, Color::Green, r);
 }
+GameInfo Inf;
 Game game;
 namespace SnakeWinForm {
 
@@ -96,6 +97,7 @@ namespace SnakeWinForm {
 			// timer1
 			// 
 			this->timer1->Enabled = true;
+			this->timer1->Interval = 100;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm1::OnTick);
 			// 
 			// PAUSE
@@ -111,6 +113,7 @@ namespace SnakeWinForm {
 			this->PAUSE->TabIndex = 3;
 			this->PAUSE->Text = L"PAUSE";
 			this->PAUSE->UseVisualStyleBackColor = false;
+			this->PAUSE->Click += gcnew System::EventHandler(this, &SnakeWinForm::MyForm1::PAUSE_OnClick);
 			// 
 			// RESTART
 			// 
@@ -250,24 +253,26 @@ namespace SnakeWinForm {
 		}
 	}
 	private: System::Void OnKeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {	
-		if (e->KeyCode == Keys::Up || e->KeyCode==Keys::W) {
-			if (game.MoInfo != DOWN) {
-				game.MoInfo = UP;
+		if (game.GInfo != GameInfo::PAUSE) {
+			if (e->KeyCode == Keys::Up || e->KeyCode == Keys::W) {
+				if (game.MoInfo != DOWN) {
+					game.MoInfo = UP;
+				}
 			}
-		}
-		if (e->KeyCode == Keys::Down || e->KeyCode == Keys::S) {
-			if (game.MoInfo != UP) {
-				game.MoInfo = DOWN;
+			if (e->KeyCode == Keys::Down || e->KeyCode == Keys::S) {
+				if (game.MoInfo != UP) {
+					game.MoInfo = DOWN;
+				}
 			}
-		}
-		if (e->KeyCode == Keys::Left || e->KeyCode == Keys::A) {
-			if (game.MoInfo != RIGHT) {
-				game.MoInfo = LEFT;
+			if (e->KeyCode == Keys::Left || e->KeyCode == Keys::A) {
+				if (game.MoInfo != RIGHT) {
+					game.MoInfo = LEFT;
+				}
 			}
-		}
-		if (e->KeyCode == Keys::Right || e->KeyCode == Keys::D) {
-			if (game.MoInfo != LEFT) {
-				game.MoInfo = RIGHT;
+			if (e->KeyCode == Keys::Right || e->KeyCode == Keys::D) {
+				if (game.MoInfo != LEFT) {
+					game.MoInfo = RIGHT;
+				}
 			}
 		}
 	}
@@ -282,7 +287,23 @@ private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArg
 }
 private: System::Void tableLayoutPanel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 }
+private: System::Void PAUSE_OnClick(System::Object^ sender, System::EventArgs^ e) {
+	if (game.GInfo != GameInfo::PAUSE) {
+		Inf = game.GInfo;
+		game.GInfo = GameInfo::PAUSE;
+		this->timer1->Enabled = false;
+	}
+	else {
+		this->timer1->Enabled = true;
+		game.GInfo = Inf;
+	}
+}
 private: System::Void RESTART_Click(System::Object^ sender, System::EventArgs^ e) {
+	this->timer1->Enabled = true;
+	graphics->Clear(this->pictureBox1->BackColor);
+	Game gam1;
+	game = gam1;
+	game.NewApple();
 }
 };
 }
