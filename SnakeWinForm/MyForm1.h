@@ -22,6 +22,7 @@ void Game::ShowGame(Graphics^ graphics, PictureBox^ pictureBox1) {
 	this->Apple.ShowPoint(graphics, Color::Green, r);
 }
 GameInfo Inf;
+MyMusic music1;
 Game game;
 namespace SnakeWinForm {
 
@@ -31,7 +32,7 @@ namespace SnakeWinForm {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
+	
 	/// <summary>
 	/// Сводка для MyForm1
 	/// </summary>
@@ -57,18 +58,16 @@ namespace SnakeWinForm {
 
 	private:
 		Graphics^ graphics;
-		Bitmap^ bitmap;
-		Pen^ pen;
-		Color^ color;
-
-
+		//System::Media::SoundPlayer^ MainThemePlayer;
+		//System::Media::SoundPlayer^ SoundPlayer;
+		
 
 
 
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::Button^ PAUSE;
 	private: System::Windows::Forms::Button^ RESTART;
-	private: System::Windows::Forms::PictureBox^ pictureBox2;
+
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 	private: System::ComponentModel::IContainer^ components;
@@ -86,10 +85,8 @@ namespace SnakeWinForm {
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->PAUSE = (gcnew System::Windows::Forms::Button());
 			this->RESTART = (gcnew System::Windows::Forms::Button());
-			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->tableLayoutPanel1->SuspendLayout();
 			this->SuspendLayout();
@@ -97,7 +94,6 @@ namespace SnakeWinForm {
 			// timer1
 			// 
 			this->timer1->Enabled = true;
-			this->timer1->Interval = 100;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm1::OnTick);
 			// 
 			// PAUSE
@@ -113,7 +109,7 @@ namespace SnakeWinForm {
 			this->PAUSE->TabIndex = 3;
 			this->PAUSE->Text = L"PAUSE";
 			this->PAUSE->UseVisualStyleBackColor = false;
-			this->PAUSE->Click += gcnew System::EventHandler(this, &SnakeWinForm::MyForm1::PAUSE_OnClick);
+			this->PAUSE->Click += gcnew System::EventHandler(this, &MyForm1::PAUSE_OnClick);
 			// 
 			// RESTART
 			// 
@@ -129,18 +125,6 @@ namespace SnakeWinForm {
 			this->RESTART->Text = L"RESTART";
 			this->RESTART->UseVisualStyleBackColor = false;
 			this->RESTART->Click += gcnew System::EventHandler(this, &MyForm1::RESTART_Click);
-			// 
-			// pictureBox2
-			// 
-			this->pictureBox2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->pictureBox2->BackColor = System::Drawing::SystemColors::HighlightText;
-			this->pictureBox2->Location = System::Drawing::Point(703, 677);
-			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(72, 69);
-			this->pictureBox2->TabIndex = 1;
-			this->pictureBox2->TabStop = false;
 			// 
 			// pictureBox1
 			// 
@@ -166,7 +150,6 @@ namespace SnakeWinForm {
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				10)));
 			this->tableLayoutPanel1->Controls->Add(this->pictureBox1, 0, 0);
-			this->tableLayoutPanel1->Controls->Add(this->pictureBox2, 1, 1);
 			this->tableLayoutPanel1->Controls->Add(this->RESTART, 0, 1);
 			this->tableLayoutPanel1->Controls->Add(this->PAUSE, 1, 0);
 			this->tableLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -195,9 +178,9 @@ namespace SnakeWinForm {
 			this->Name = L"MyForm1";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"JOJOSnake";
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &MyForm1::Form1_Closing);
 			this->Load += gcnew System::EventHandler(this, &MyForm1::MyForm1_Load);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm1::OnKeyUp);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->tableLayoutPanel1->ResumeLayout(false);
 			this->ResumeLayout(false);
@@ -205,6 +188,13 @@ namespace SnakeWinForm {
 
 		}
 #pragma endregion
+		private: System::Void	Form1_Closing(Object^ sender, FormClosingEventArgs^ e) {
+			this->timer1->Enabled = false;
+			//MainThemePlayer->Stop();
+			delete[] graphics;
+			//[] MainThemePlayer;
+		}
+
 	private: System::Void OnTick(System::Object^ sender, System::EventArgs^ e) {
 		if (game.GInfo != END) {
 			game.ShowGame(graphics, this->pictureBox1);
@@ -236,6 +226,9 @@ namespace SnakeWinForm {
 		New.y = game.box.GetSnake().GetBody()[game.box.GetSnake().GetSize() - 1].y + difY;
 		if (game.GInfo != END) {
 			if (New.x == game.Apple.x && New.y == game.Apple.y) {
+				Random rand;
+				// = gcnew System::Media::SoundPlayer(gcnew System::String(music1.MusicGrowh[rand.Next() % 2]));
+				//->Play();
 				Snake snake1 = game.box.GetSnake();
 				snake1.SnakeGrow(game.Apple);
 				game.box.SetSnake(snake1);
@@ -246,6 +239,9 @@ namespace SnakeWinForm {
 				snake2.SnakeMove(New);
 				game.box.SetSnake(snake2);
 				if (game.IfGameEnd()) {
+					//MainThemePlayer->Stop();
+					// = gcnew System::Media::SoundPlayer(gcnew System::String(music1.MusicLoose));
+					//MainThemePlayer->Play();
 					this->timer1->Enabled = false;
 					game.GInfo = END;
 				}
@@ -254,6 +250,11 @@ namespace SnakeWinForm {
 	}
 	private: System::Void OnKeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {	
 		if (game.GInfo != GameInfo::PAUSE) {
+			if (game.GInfo == BEGIN) {
+				//MainThemePlayer = gcnew System::Media::SoundPlayer(gcnew System::String(music1.MusicMainTheme));
+				//MainThemePlayer->PlayLooping();
+				game.GInfo = LOAD;
+			}
 			if (e->KeyCode == Keys::Up || e->KeyCode == Keys::W) {
 				if (game.MoInfo != DOWN) {
 					game.MoInfo = UP;
@@ -282,7 +283,6 @@ private: System::Void MyForm1_Load(System::Object^ sender, System::EventArgs^ e)
 	game = gam1;
 	game.NewApple();
 }
-
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void tableLayoutPanel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
@@ -299,6 +299,7 @@ private: System::Void PAUSE_OnClick(System::Object^ sender, System::EventArgs^ e
 	}
 }
 private: System::Void RESTART_Click(System::Object^ sender, System::EventArgs^ e) {
+	//MainThemePlayer->Stop();
 	this->timer1->Enabled = true;
 	graphics->Clear(this->pictureBox1->BackColor);
 	Game gam1;
