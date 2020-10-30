@@ -27,7 +27,7 @@ enum MusicInfo {
 struct MyMusic {
 	const char* MusicToPause[3] = { "TheWorld1.wav","TheWorld2.wav","TheWorld3.wav" };
 	const char* MusicResume = "TimeResume.wav";
-	const char* MusicGrowh[2] = { "Yes1.wav","Yes2.wav" };
+    const char* MusicGrowh[2] = { "Yes1.wav","Yes2.wav" };
 	const char* MusicMainTheme = "JOJOStardustCrusader.wav";
 	const char* MusicLoose = "LooseTheme.wav";
 };

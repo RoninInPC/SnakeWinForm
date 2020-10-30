@@ -38,4 +38,21 @@
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="JOJOStardustCrusader.wav">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="LooseTheme.wav">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="TheWorld3.wav">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="TimeResume.wav">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+    <Media Include="Yes1.wav">
+      <Filter>Файлы ресурсов</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 #pragma once
+
 #include"shake.hpp"
 void MyPoint::ShowPoint(Graphics^ graphics, Color color, int r) {
 	SolidBrush^ pen = gcnew SolidBrush(color);
@@ -32,10 +33,8 @@ namespace SnakeWinForm {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-	
-	/// <summary>
-	/// Сводка для MyForm1
-	/// </summary>
+	using namespace System::Media;
+	using namespace System::Windows::Media;
 	public ref class MyForm1 : public System::Windows::Forms::Form
 	{
 	public:
@@ -58,16 +57,12 @@ namespace SnakeWinForm {
 
 	private:
 		Graphics^ graphics;
-		//System::Media::SoundPlayer^ MainThemePlayer;
-		//System::Media::SoundPlayer^ SoundPlayer;
-		
-
-
-
+		WMPLib::WindowsMediaPlayerClass^ Main = gcnew WMPLib::WindowsMediaPlayerClass();
+		MediaPlayer^ Effect = gcnew MediaPlayer();
+		MediaPlayer^ PauseEffect = gcnew MediaPlayer();
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::Windows::Forms::Button^ PAUSE;
 	private: System::Windows::Forms::Button^ RESTART;
-
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
 	private: System::ComponentModel::IContainer^ components;
@@ -103,9 +98,9 @@ namespace SnakeWinForm {
 			this->PAUSE->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"PAUSE.BackgroundImage")));
 			this->PAUSE->Font = (gcnew System::Drawing::Font(L"Broadway", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->PAUSE->Location = System::Drawing::Point(703, 461);
+			this->PAUSE->Location = System::Drawing::Point(886, 619);
 			this->PAUSE->Name = L"PAUSE";
-			this->PAUSE->Size = System::Drawing::Size(72, 210);
+			this->PAUSE->Size = System::Drawing::Size(93, 235);
 			this->PAUSE->TabIndex = 3;
 			this->PAUSE->Text = L"PAUSE";
 			this->PAUSE->UseVisualStyleBackColor = false;
@@ -118,9 +113,9 @@ namespace SnakeWinForm {
 			this->RESTART->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"RESTART.BackgroundImage")));
 			this->RESTART->Font = (gcnew System::Drawing::Font(L"Broadway", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->RESTART->Location = System::Drawing::Point(438, 677);
+			this->RESTART->Location = System::Drawing::Point(608, 860);
 			this->RESTART->Name = L"RESTART";
-			this->RESTART->Size = System::Drawing::Size(259, 69);
+			this->RESTART->Size = System::Drawing::Size(272, 90);
 			this->RESTART->TabIndex = 2;
 			this->RESTART->Text = L"RESTART";
 			this->RESTART->UseVisualStyleBackColor = false;
@@ -131,9 +126,9 @@ namespace SnakeWinForm {
 			this->pictureBox1->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->pictureBox1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(128)),
 				static_cast<System::Int32>(static_cast<System::Byte>(0)));
-			this->pictureBox1->Location = System::Drawing::Point(20, 7);
+			this->pictureBox1->Location = System::Drawing::Point(21, 8);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(660, 660);
+			this->pictureBox1->Size = System::Drawing::Size(840, 840);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Click += gcnew System::EventHandler(this, &MyForm1::pictureBox1_Click);
@@ -149,9 +144,9 @@ namespace SnakeWinForm {
 				90)));
 			this->tableLayoutPanel1->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 				10)));
-			this->tableLayoutPanel1->Controls->Add(this->pictureBox1, 0, 0);
 			this->tableLayoutPanel1->Controls->Add(this->RESTART, 0, 1);
 			this->tableLayoutPanel1->Controls->Add(this->PAUSE, 1, 0);
+			this->tableLayoutPanel1->Controls->Add(this->pictureBox1, 0, 0);
 			this->tableLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->tableLayoutPanel1->ForeColor = System::Drawing::Color::White;
 			this->tableLayoutPanel1->Location = System::Drawing::Point(0, 0);
@@ -159,22 +154,22 @@ namespace SnakeWinForm {
 			this->tableLayoutPanel1->RowCount = 2;
 			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 90)));
 			this->tableLayoutPanel1->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 10)));
-			this->tableLayoutPanel1->Size = System::Drawing::Size(778, 749);
+			this->tableLayoutPanel1->Size = System::Drawing::Size(982, 953);
 			this->tableLayoutPanel1->TabIndex = 0;
 			this->tableLayoutPanel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm1::tableLayoutPanel1_Paint);
 			// 
 			// MyForm1
 			// 
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::None;
-			this->ClientSize = System::Drawing::Size(778, 749);
+			this->BackgroundImageLayout = System::Windows::Forms::ImageLayout::None;
+			this->ClientSize = System::Drawing::Size(982, 953);
 			this->Controls->Add(this->tableLayoutPanel1);
 			this->Cursor = System::Windows::Forms::Cursors::Arrow;
-			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::Fixed3D;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->KeyPreview = true;
 			this->MaximizeBox = false;
-			this->MaximumSize = System::Drawing::Size(800, 800);
-			this->MinimumSize = System::Drawing::Size(800, 800);
+			this->MaximumSize = System::Drawing::Size(1000, 1000);
+			this->MinimumSize = System::Drawing::Size(1000, 1000);
 			this->Name = L"MyForm1";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"JOJOSnake";
@@ -190,9 +185,11 @@ namespace SnakeWinForm {
 #pragma endregion
 		private: System::Void	Form1_Closing(Object^ sender, FormClosingEventArgs^ e) {
 			this->timer1->Enabled = false;
-			//MainThemePlayer->Stop();
+			Main->stop();
+			Effect->Stop();
+			PauseEffect->Stop();
 			delete[] graphics;
-			//[] MainThemePlayer;
+		
 		}
 
 	private: System::Void OnTick(System::Object^ sender, System::EventArgs^ e) {
@@ -227,8 +224,10 @@ namespace SnakeWinForm {
 		if (game.GInfo != END) {
 			if (New.x == game.Apple.x && New.y == game.Apple.y) {
 				Random rand;
-				// = gcnew System::Media::SoundPlayer(gcnew System::String(music1.MusicGrowh[rand.Next() % 2]));
-				//->Play();
+			 	Uri^ uri = gcnew Uri("Yes1.wav", UriKind::Relative);
+				Effect->Open(uri);
+				Effect->Volume = 1;
+				Effect->Play();
 				Snake snake1 = game.box.GetSnake();
 				snake1.SnakeGrow(game.Apple);
 				game.box.SetSnake(snake1);
@@ -239,9 +238,12 @@ namespace SnakeWinForm {
 				snake2.SnakeMove(New);
 				game.box.SetSnake(snake2);
 				if (game.IfGameEnd()) {
-					//MainThemePlayer->Stop();
-					// = gcnew System::Media::SoundPlayer(gcnew System::String(music1.MusicLoose));
-					//MainThemePlayer->Play();
+					Effect->Stop();
+					PauseEffect->Stop();
+					Main->stop();
+					Main->setMode("loop", false);
+					Main->URL = "LooseTheme.wav";
+					Main->play();
 					this->timer1->Enabled = false;
 					game.GInfo = END;
 				}
@@ -251,8 +253,10 @@ namespace SnakeWinForm {
 	private: System::Void OnKeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {	
 		if (game.GInfo != GameInfo::PAUSE) {
 			if (game.GInfo == BEGIN) {
-				//MainThemePlayer = gcnew System::Media::SoundPlayer(gcnew System::String(music1.MusicMainTheme));
-				//MainThemePlayer->PlayLooping();
+				Main->URL = "JOJOStardustCrusader.wav";
+				Main->setMode("loop", true);
+				Main->play();
+				Main->volume = 30;
 				game.GInfo = LOAD;
 			}
 			if (e->KeyCode == Keys::Up || e->KeyCode == Keys::W) {
@@ -288,19 +292,36 @@ private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArg
 private: System::Void tableLayoutPanel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 }
 private: System::Void PAUSE_OnClick(System::Object^ sender, System::EventArgs^ e) {
-	if (game.GInfo != GameInfo::PAUSE) {
-		Inf = game.GInfo;
-		game.GInfo = GameInfo::PAUSE;
-		this->timer1->Enabled = false;
-	}
-	else {
-		this->timer1->Enabled = true;
-		game.GInfo = Inf;
+	if (game.GInfo != END) {
+		if (game.GInfo != GameInfo::PAUSE) {
+			Inf = game.GInfo;
+			Main->pause();
+			Effect->Stop();
+			Uri^ uri2 = gcnew Uri("TheWorld3.wav", UriKind::Relative);
+			PauseEffect->Open(uri2);
+			PauseEffect->Volume = 1;
+			PauseEffect->Play();
+			game.GInfo = GameInfo::PAUSE;
+			this->timer1->Enabled = false;
+		}
+		else {
+			PauseEffect->Stop();
+			Uri^ uri2 = gcnew Uri("TimeResume.wav",UriKind::Relative);
+			PauseEffect->Open(uri2);
+			
+			PauseEffect->Volume = 1;
+			PauseEffect->Play();
+			Main->play();
+			this->timer1->Enabled = true;
+			game.GInfo = Inf;
+		}
 	}
 }
 private: System::Void RESTART_Click(System::Object^ sender, System::EventArgs^ e) {
-	//MainThemePlayer->Stop();
 	this->timer1->Enabled = true;
+	Main->stop();
+	Effect->Stop();
+	PauseEffect->Stop();
 	graphics->Clear(this->pictureBox1->BackColor);
 	Game gam1;
 	game = gam1;
