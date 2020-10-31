@@ -73,6 +73,7 @@ public:
 	void ShowGame(Graphics^ graphics, PictureBox^ pictureBox1);
 	bool IfGameEnd();	
 	void NewApple();
-	//void ShowGameOver();
-	//void ShowPause();
+	void ShowMovingInfo(Graphics^ graphics, PictureBox^ pictureBox1);
+	void ShowGameOver(Graphics^ graphics, PictureBox^ pictureBox1);
+	void ShowPause(Graphics^ graphics, PictureBox^ pictureBox1);
 };

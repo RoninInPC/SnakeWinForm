@@ -1,5 +1,4 @@
 #pragma once
-
 #include"shake.hpp"
 void MyPoint::ShowPoint(Graphics^ graphics, Color color, int r) {
 	SolidBrush^ pen = gcnew SolidBrush(color);
@@ -22,9 +21,35 @@ void Game::ShowGame(Graphics^ graphics, PictureBox^ pictureBox1) {
 	this->box.ShowBox(graphics, pictureBox1->Height,pictureBox1->Width);
 	this->Apple.ShowPoint(graphics, Color::Green, r);
 }
+void Game::ShowMovingInfo(Graphics^ graphics, PictureBox^ pictureBox1) {
+	graphics->Clear(pictureBox1->BackColor);
+	if (this->MoInfo != ZERO) {
+		if (this->MoInfo == UP) {
+			graphics->DrawString("UP", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 3, pictureBox1->Width / 3);
+		}
+		if (this->MoInfo == DOWN) {
+			graphics->DrawString("DOWN", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 10, pictureBox1->Width / 3);
+		}
+		if (this->MoInfo == LEFT) {
+			graphics->DrawString("LEFT", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 5, pictureBox1->Width / 3);
+		}
+		if (this->MoInfo == RIGHT) {
+			graphics->DrawString("RIGHT", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 10, pictureBox1->Width / 3);
+		}
+	}
+}
+void Game::ShowPause(Graphics^ graphics, PictureBox^ pictureBox1) {
+	graphics->Clear(pictureBox1->BackColor);
+	graphics->DrawString("PAUSE", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 10, pictureBox1->Width / 3);
+}
+void Game::ShowGameOver(Graphics^ graphics, PictureBox^ pictureBox1) {
+	graphics->Clear(pictureBox1->BackColor);
+	graphics->DrawString("GAME\nOVER", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 8, pictureBox1->Width / 4);
+}
 GameInfo Inf;
 MyMusic music1;
 Game game;
+extern int NumOfForm;
 namespace SnakeWinForm {
 
 	using namespace System;
@@ -57,6 +82,7 @@ namespace SnakeWinForm {
 
 	private:
 		Graphics^ graphics;
+		Graphics^ graphics2;
 		WMPLib::WindowsMediaPlayerClass^ Main = gcnew WMPLib::WindowsMediaPlayerClass();
 		MediaPlayer^ Effect = gcnew MediaPlayer();
 		MediaPlayer^ PauseEffect = gcnew MediaPlayer();
@@ -65,6 +91,7 @@ namespace SnakeWinForm {
 	private: System::Windows::Forms::Button^ RESTART;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::TableLayoutPanel^ tableLayoutPanel1;
+	private: System::Windows::Forms::PictureBox^ pictureBox2;
 	private: System::ComponentModel::IContainer^ components;
 
 
@@ -82,8 +109,10 @@ namespace SnakeWinForm {
 			this->RESTART = (gcnew System::Windows::Forms::Button());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->tableLayoutPanel1 = (gcnew System::Windows::Forms::TableLayoutPanel());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->tableLayoutPanel1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// timer1
@@ -147,6 +176,7 @@ namespace SnakeWinForm {
 			this->tableLayoutPanel1->Controls->Add(this->RESTART, 0, 1);
 			this->tableLayoutPanel1->Controls->Add(this->PAUSE, 1, 0);
 			this->tableLayoutPanel1->Controls->Add(this->pictureBox1, 0, 0);
+			this->tableLayoutPanel1->Controls->Add(this->pictureBox2, 1, 1);
 			this->tableLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->tableLayoutPanel1->ForeColor = System::Drawing::Color::White;
 			this->tableLayoutPanel1->Location = System::Drawing::Point(0, 0);
@@ -157,6 +187,18 @@ namespace SnakeWinForm {
 			this->tableLayoutPanel1->Size = System::Drawing::Size(982, 953);
 			this->tableLayoutPanel1->TabIndex = 0;
 			this->tableLayoutPanel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm1::tableLayoutPanel1_Paint);
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->Anchor = System::Windows::Forms::AnchorStyles::None;
+			this->pictureBox2->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
+			this->pictureBox2->Location = System::Drawing::Point(887, 860);
+			this->pictureBox2->MaximumSize = System::Drawing::Size(90, 90);
+			this->pictureBox2->MinimumSize = System::Drawing::Size(90, 90);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(90, 90);
+			this->pictureBox2->TabIndex = 4;
+			this->pictureBox2->TabStop = false;
 			// 
 			// MyForm1
 			// 
@@ -178,6 +220,7 @@ namespace SnakeWinForm {
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm1::OnKeyUp);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->tableLayoutPanel1->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -189,7 +232,11 @@ namespace SnakeWinForm {
 			Effect->Stop();
 			PauseEffect->Stop();
 			delete[] graphics;
-		
+			delete[] graphics2;
+			delete[] Main;
+			delete[] Effect;
+			delete[] PauseEffect;
+			NumOfForm--;
 		}
 
 	private: System::Void OnTick(System::Object^ sender, System::EventArgs^ e) {
@@ -238,6 +285,7 @@ namespace SnakeWinForm {
 				snake2.SnakeMove(New);
 				game.box.SetSnake(snake2);
 				if (game.IfGameEnd()) {
+					game.ShowGameOver(graphics2,this->pictureBox2);
 					Effect->Stop();
 					PauseEffect->Stop();
 					Main->stop();
@@ -256,7 +304,7 @@ namespace SnakeWinForm {
 				Main->URL = "JOJOStardustCrusader.wav";
 				Main->setMode("loop", true);
 				Main->play();
-				Main->volume = 30;
+				Main->volume = 50;
 				game.GInfo = LOAD;
 			}
 			if (e->KeyCode == Keys::Up || e->KeyCode == Keys::W) {
@@ -279,10 +327,12 @@ namespace SnakeWinForm {
 					game.MoInfo = RIGHT;
 				}
 			}
+			game.ShowMovingInfo(graphics2, this->pictureBox2);
 		}
 	}
 private: System::Void MyForm1_Load(System::Object^ sender, System::EventArgs^ e) {
 	graphics = this->pictureBox1->CreateGraphics();
+	graphics2 = this->pictureBox2->CreateGraphics();
 	Game gam1;
 	game = gam1;
 	game.NewApple();
@@ -294,6 +344,7 @@ private: System::Void tableLayoutPanel1_Paint(System::Object^ sender, System::Wi
 private: System::Void PAUSE_OnClick(System::Object^ sender, System::EventArgs^ e) {
 	if (game.GInfo != END) {
 		if (game.GInfo != GameInfo::PAUSE) {
+			game.ShowPause(graphics2, this->pictureBox2);
 			Inf = game.GInfo;
 			Main->pause();
 			Effect->Stop();
@@ -305,10 +356,11 @@ private: System::Void PAUSE_OnClick(System::Object^ sender, System::EventArgs^ e
 			this->timer1->Enabled = false;
 		}
 		else {
+			game.ShowMovingInfo(graphics2, this->pictureBox2);
+			SolidBrush^ New = gcnew SolidBrush(this->pictureBox1->BackColor);
 			PauseEffect->Stop();
 			Uri^ uri2 = gcnew Uri("TimeResume.wav",UriKind::Relative);
 			PauseEffect->Open(uri2);
-			
 			PauseEffect->Volume = 1;
 			PauseEffect->Play();
 			Main->play();
@@ -323,6 +375,7 @@ private: System::Void RESTART_Click(System::Object^ sender, System::EventArgs^ e
 	Effect->Stop();
 	PauseEffect->Stop();
 	graphics->Clear(this->pictureBox1->BackColor);
+	graphics2->Clear(this->pictureBox2->BackColor);
 	Game gam1;
 	game = gam1;
 	game.NewApple();

@@ -1,6 +1,7 @@
 #pragma once
 #include"MyForm1.h"
 int t=0;
+int NumOfForm = 0;
 namespace SnakeWinForm {
 
 	using namespace System;
@@ -174,8 +175,11 @@ namespace SnakeWinForm {
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void START_Click(System::Object^ sender, System::EventArgs^ e) {
-		SnakeWinForm::MyForm1^ GameForm = gcnew SnakeWinForm::MyForm1;
-		GameForm->Show();
+		if (NumOfForm == 0) {
+			SnakeWinForm::MyForm1^ GameForm = gcnew SnakeWinForm::MyForm1;
+			GameForm->Show();
+			NumOfForm++;
+		}
 	}
 	private: System::Void SETTINGS_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
