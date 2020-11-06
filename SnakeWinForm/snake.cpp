@@ -1,5 +1,6 @@
 #include"shake.hpp"
 #include<iostream>
+#include<fstream>
 extern int t;
 void Snake::SnakeMove(MyPoint New) {
 	this->Before = this->Body[0];
@@ -40,12 +41,27 @@ void Game::NewApple() {
 	while (1) {
 		int x = rand() % SIZEX;
 		int y = rand() % SIZEY;
+		int f = 1;
 		for (int i = 0; i < this->box.GetSnake().GetSize(); i++) {
-			if (this->box.GetSnake().GetBody()[i].x != x || this->box.GetSnake().GetBody()[i].y != y) {
-				this->Apple.x = x;
-				this->Apple.y = y;
-				return;
+			if (this->box.GetSnake().GetBody()[i].x == x && this->box.GetSnake().GetBody()[i].y == y) {
+				f = 0;
+				break;
 			}
 		}
+		if (f == 1) {
+			this->Apple.x = x;
+			this->Apple.y = y;
+			break;
+		}
 	}
+}
+void MySettings::GetInFile(std::string One) {
+	std::fstream input(One);
+	input >> MusicVolume >> EffectVolume >> Speed;
+	input.close();
+}
+void MySettings::SetInFile(std::string One) {
+	std::ofstream output(One, std::ios_base::trunc);
+	output << MusicVolume<<" "<< EffectVolume<<" "<< Speed;
+	output.close();
 }

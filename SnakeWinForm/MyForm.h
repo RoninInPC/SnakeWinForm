@@ -1,7 +1,10 @@
 #pragma once
 #include"MyForm1.h"
+#include"MyForm2.h"
 int t=0;
 int NumOfForm = 0;
+int NumOfForm2 = 0;
+MySettings Copy;
 namespace SnakeWinForm {
 
 	using namespace System;
@@ -175,13 +178,18 @@ namespace SnakeWinForm {
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
 	}
 	private: System::Void START_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (NumOfForm == 0) {
+		if (NumOfForm == 0 && NumOfForm2 == 0) {
 			SnakeWinForm::MyForm1^ GameForm = gcnew SnakeWinForm::MyForm1;
 			GameForm->Show();
 			NumOfForm++;
 		}
 	}
 	private: System::Void SETTINGS_Click(System::Object^ sender, System::EventArgs^ e) {
+		if (NumOfForm2 == 0 && NumOfForm == 0) {
+			SnakeWinForm::MyForm2^ SettingsForm = gcnew SnakeWinForm::MyForm2;
+			SettingsForm->Show();
+			NumOfForm2++;
+		}
 	}
 	private: System::Void OUT_Click(System::Object^ sender, System::EventArgs^ e) {
 		this->Close();

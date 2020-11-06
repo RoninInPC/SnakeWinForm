@@ -24,6 +24,9 @@
     <ClInclude Include="MyForm1.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
+    <ClInclude Include="MyForm2.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,5 +57,10 @@
     <Media Include="Yes1.wav">
       <Filter>Файлы ресурсов</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Settings.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

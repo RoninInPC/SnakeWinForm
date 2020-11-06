@@ -1,3 +1,4 @@
+#include<string>
 using namespace System;
 using namespace System::ComponentModel;
 using namespace System::Collections;
@@ -23,6 +24,13 @@ enum MusicInfo {
 	PLAY,
 	STOP,
 	LOOSE
+};
+struct MySettings {
+	int MusicVolume=10;
+	int EffectVolume=10;
+	int Speed=0;
+	void SetInFile(std::string One);
+	void GetInFile(std::string One);
 };
 struct MyMusic {
 	const char* MusicToPause[3] = { "TheWorld1.wav","TheWorld2.wav","TheWorld3.wav" };

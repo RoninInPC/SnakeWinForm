@@ -21,33 +21,42 @@ void Game::ShowGame(Graphics^ graphics, PictureBox^ pictureBox1) {
 	this->box.ShowBox(graphics, pictureBox1->Height,pictureBox1->Width);
 	this->Apple.ShowPoint(graphics, Color::Green, r);
 }
+extern MySettings Copy;
 void Game::ShowMovingInfo(Graphics^ graphics, PictureBox^ pictureBox1) {
 	graphics->Clear(pictureBox1->BackColor);
+	Drawing::StringFormat^ sf = gcnew Drawing::StringFormat;
+	sf->Alignment = Drawing::StringAlignment::Center;
+	sf->LineAlignment = Drawing::StringAlignment::Center;
 	if (this->MoInfo != ZERO) {
 		if (this->MoInfo == UP) {
-			graphics->DrawString("UP", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 3, pictureBox1->Width / 3);
+			graphics->DrawString("UP", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 2, pictureBox1->Width / 2,sf);
 		}
 		if (this->MoInfo == DOWN) {
-			graphics->DrawString("DOWN", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 10, pictureBox1->Width / 3);
+			graphics->DrawString("DOWN", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 2, pictureBox1->Width / 2,sf);
 		}
 		if (this->MoInfo == LEFT) {
-			graphics->DrawString("LEFT", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 5, pictureBox1->Width / 3);
+			graphics->DrawString("LEFT", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 2, pictureBox1->Width / 2,sf);
 		}
 		if (this->MoInfo == RIGHT) {
-			graphics->DrawString("RIGHT", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 10, pictureBox1->Width / 3);
+			graphics->DrawString("RIGHT", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 2, pictureBox1->Width / 2,sf);
 		}
 	}
 }
 void Game::ShowPause(Graphics^ graphics, PictureBox^ pictureBox1) {
 	graphics->Clear(pictureBox1->BackColor);
-	graphics->DrawString("PAUSE", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 10, pictureBox1->Width / 3);
+	Drawing::StringFormat^ sf = gcnew Drawing::StringFormat;
+	sf->Alignment = Drawing::StringAlignment::Center;
+	sf->LineAlignment = Drawing::StringAlignment::Center;
+	graphics->DrawString("PAUSE", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 2, pictureBox1->Width / 2,sf);
 }
 void Game::ShowGameOver(Graphics^ graphics, PictureBox^ pictureBox1) {
 	graphics->Clear(pictureBox1->BackColor);
-	graphics->DrawString("GAME\nOVER", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 8, pictureBox1->Width / 4);
+	Drawing::StringFormat^ sf = gcnew Drawing::StringFormat;
+	sf->Alignment = Drawing::StringAlignment::Center;
+	sf->LineAlignment = Drawing::StringAlignment::Center;
+	graphics->DrawString("GAME\nOVER", gcnew System::Drawing::Font(L"Broadway", 12), System::Drawing::Brushes::Black, pictureBox1->Height / 2, pictureBox1->Width / 2,sf);
 }
 GameInfo Inf;
-MyMusic music1;
 Game game;
 extern int NumOfForm;
 namespace SnakeWinForm {
@@ -125,7 +134,7 @@ namespace SnakeWinForm {
 			this->PAUSE->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->PAUSE->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"PAUSE.BackgroundImage")));
-			this->PAUSE->Font = (gcnew System::Drawing::Font(L"Broadway", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->PAUSE->Font = (gcnew System::Drawing::Font(L"Broadway", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->PAUSE->Location = System::Drawing::Point(886, 619);
 			this->PAUSE->Name = L"PAUSE";
@@ -140,7 +149,7 @@ namespace SnakeWinForm {
 			this->RESTART->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->RESTART->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"RESTART.BackgroundImage")));
-			this->RESTART->Font = (gcnew System::Drawing::Font(L"Broadway", 7.8F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			this->RESTART->Font = (gcnew System::Drawing::Font(L"Broadway", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->RESTART->Location = System::Drawing::Point(608, 860);
 			this->RESTART->Name = L"RESTART";
@@ -273,7 +282,6 @@ namespace SnakeWinForm {
 				Random rand;
 			 	Uri^ uri = gcnew Uri("Yes1.wav", UriKind::Relative);
 				Effect->Open(uri);
-				Effect->Volume = 1;
 				Effect->Play();
 				Snake snake1 = game.box.GetSnake();
 				snake1.SnakeGrow(game.Apple);
@@ -299,12 +307,11 @@ namespace SnakeWinForm {
 		}
 	}
 	private: System::Void OnKeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {	
-		if (game.GInfo != GameInfo::PAUSE) {
+		if (game.GInfo != GameInfo::PAUSE && game.GInfo!=END) {
 			if (game.GInfo == BEGIN) {
 				Main->URL = "JOJOStardustCrusader.wav";
 				Main->setMode("loop", true);
 				Main->play();
-				Main->volume = 50;
 				game.GInfo = LOAD;
 			}
 			if (e->KeyCode == Keys::Up || e->KeyCode == Keys::W) {
@@ -333,6 +340,10 @@ namespace SnakeWinForm {
 private: System::Void MyForm1_Load(System::Object^ sender, System::EventArgs^ e) {
 	graphics = this->pictureBox1->CreateGraphics();
 	graphics2 = this->pictureBox2->CreateGraphics();
+	PauseEffect->Volume = 0 + 0.1 * Copy.EffectVolume;
+	Effect->Volume = 0 + 0.1 * Copy.EffectVolume;
+	Main->volume = 0 + 10 * Copy.MusicVolume;
+	this->timer1->Interval = 150 - 10 * Copy.Speed;
 	Game gam1;
 	game = gam1;
 	game.NewApple();
@@ -350,7 +361,6 @@ private: System::Void PAUSE_OnClick(System::Object^ sender, System::EventArgs^ e
 			Effect->Stop();
 			Uri^ uri2 = gcnew Uri("TheWorld3.wav", UriKind::Relative);
 			PauseEffect->Open(uri2);
-			PauseEffect->Volume = 1;
 			PauseEffect->Play();
 			game.GInfo = GameInfo::PAUSE;
 			this->timer1->Enabled = false;
@@ -361,7 +371,6 @@ private: System::Void PAUSE_OnClick(System::Object^ sender, System::EventArgs^ e
 			PauseEffect->Stop();
 			Uri^ uri2 = gcnew Uri("TimeResume.wav",UriKind::Relative);
 			PauseEffect->Open(uri2);
-			PauseEffect->Volume = 1;
 			PauseEffect->Play();
 			Main->play();
 			this->timer1->Enabled = true;
